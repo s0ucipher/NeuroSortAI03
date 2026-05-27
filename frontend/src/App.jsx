@@ -30,14 +30,6 @@ import { FAQ_QUESTIONS } from './faq'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
 
-const categoryIcons = {
-  Study: BookOpen,
-  Images: Image,
-  Documents: Files,
-  Videos: Video,
-  Others: Archive,
-}
-
 const categoryColors = {
   Study: 'violet',
   Images: 'blue',
@@ -59,7 +51,6 @@ export default function App() {
   const [preScanResults, setPreScanResults] = useState(null)
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [showShortcutsModal, setShowShortcutsModal] = useState(false)
-  const [showDevModal, setShowDevModal] = useState(false)
   const [scanDelay, setScanDelay] = useState(30)
   const [duplicateCheck, setDuplicateCheck] = useState(true)
 
@@ -80,7 +71,7 @@ export default function App() {
   const [scanProgress, setScanProgress] = useState(0)
   const [elapsedTime, setElapsedTime] = useState('00:00')
   const [currentStep, setCurrentStep] = useState(1)
-  const [loading, setLoading] = useState(false)
+  const [, setLoading] = useState(false)
 
   // API Results
   const [results, setResults] = useState(null)
@@ -232,10 +223,6 @@ export default function App() {
     })
   }
 
-  const handleRemoveSource = (item) => {
-    setSources((prev) => prev.filter((s) => s !== item))
-  }
-
   const handleClearSources = () => {
     setSources([])
     setResults(null)
@@ -378,7 +365,7 @@ export default function App() {
       setPreScanResults(apiResponse) // Set immediately to feed sizes/counts into animation
     } catch (err) {
       console.error(err)
-      setError(err.response?.data?.error || 'Scan connection failed. Check server execution on port 5050.')
+      setError(err.response?.data?.error || 'Scan connection failed. Check that the same-host API is running.')
     }
 
     // Progress Bar Animation
@@ -589,7 +576,7 @@ export default function App() {
       folders: '0',
       size: '0 Bytes',
     }
-  }, [scanState, scanProgress, sources, results])
+  }, [scanState, scanProgress, sources, results, preScanResults])
 
   // Category values percentages
   const categoriesList = useMemo(() => {
